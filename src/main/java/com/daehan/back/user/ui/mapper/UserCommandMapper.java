@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 public class UserCommandMapper {
     public UserCreateCommand toCommand(UserCreateRequest request) {
         return new UserCreateCommand(
-                request.id(),
                 request.name(),
                 request.password(),
                 request.email(),

@@ -3,6 +3,7 @@ package com.daehan.back.user.ui;
 import com.daehan.back.user.application.dto.UserCreateCommand;
 import com.daehan.back.user.application.service.UserService;
 import com.daehan.back.user.ui.dto.req.UserCreateRequest;
+import com.daehan.back.user.ui.dto.res.UserResponse;
 import com.daehan.back.user.ui.mapper.UserCommandMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -22,12 +23,12 @@ public class UserController {
     private final UserCommandMapper userMapper;
 
     @PostMapping
-    public ResponseEntity<Void> createUser(
+    public ResponseEntity<UserResponse> createUser(
             @RequestBody @Valid final UserCreateRequest request
     ) {
         UserCreateCommand command = userMapper.toCommand(request);
         Long userId = userService.createUser(command);
 
-        return ResponseEntity.created(URI.create("/user/"+userId)).build();
+        return ResponseEntity.created(URI.create("/user/"+userId)).body(new UserResponse(userId));
     }
 }

@@ -1,0 +1,23 @@
+spring:
+  application:
+    name: daehan-back
+  datasource:
+    url: jdbc:h2:mem:testdb # H2 In-Memory 데이터베이스 연결
+    driver-class-name: org.h2.Driver # H2 드라이버
+    username: sa # 사용자명
+    password: # 비밀번호
+  jpa:
+    hibernate:
+      ddl-auto: create # 애플리케이션 실행 시 테이블 자동 생성
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+        format_sql: true      # 쿼리 로그 포맷 (정렬)
+        show_sql: true        # 쿼리 로그 출력
+  h2:
+    console:
+      enabled: true # H2 Console 사용 설정
+      path: /h2-console # H2 Console 접속 경로
+jwt:
+  secret: lR6u+Y8FvL2jC1sZ7+Y3bT9nQpW5oZ9bV/mK3c2xQyo=
+  token-validity-in-seconds: 36000 # 10시간 (초 단위)
