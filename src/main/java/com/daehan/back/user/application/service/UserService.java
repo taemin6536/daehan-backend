@@ -4,6 +4,7 @@ import com.daehan.back.user.application.dto.UserCreateCommand;
 import com.daehan.back.user.application.mapper.UserMapper;
 import com.daehan.back.user.domain.model.User;
 import com.daehan.back.user.domain.repository.UserRepository;
+import com.daehan.back.user.exception.DuplicateEmailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,9 +25,14 @@ public class UserService implements UserDetailsService {
     public Long createUser(
             final UserCreateCommand command
     ) {
+        userRepository.findByEmail(command.email())
+                .ifPresent(user -> {
+                    throw new DuplicateEmailException("이미 존재하는 사용자입니다.");
+                });
         User user = userMapper.toUser(command);
-        String encodePassword = passwordEncoder.encode(command.password()); //암호화
-        user.withPassword(encodePassword);
+
+        //비밀번호 암호화
+        user.passwordEncode(passwordEncoder);
         final User save = userRepository.save(user);
 
         return save.getId();
