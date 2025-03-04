@@ -28,6 +28,6 @@ public class UserController {
         UserCreateCommand command = userMapper.toCommand(request);
         Long userId = userService.createUser(command);
 
-        return ResponseEntity.created(URI.create("/main")).build();
+        return ResponseEntity.created(URI.create("/user/"+userId)).build();
     }
 }

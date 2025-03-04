@@ -3,7 +3,7 @@ package com.daehan.back.user.application.service;
 import com.daehan.back.user.application.dto.UserCreateCommand;
 import com.daehan.back.user.application.mapper.UserMapper;
 import com.daehan.back.user.domain.model.User;
-import com.daehan.back.user.infra.adapter.UserRepository;
+import com.daehan.back.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

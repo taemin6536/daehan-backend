@@ -28,6 +28,10 @@ public class User {
     @Column(name = "phonenumber")
     private String phoneNumber;
 
+    public boolean matchesPassword(String password){
+        return this.password.equals(password);
+    }
+
     @Builder
     public User(String name, String password, String email, String phoneNumber) {
         this.name = name;
