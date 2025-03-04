@@ -17,8 +17,7 @@ import java.io.IOException;
 @Slf4j
 @Component
 @RequiredArgsConstructor
-public class JwtTokenFilter extends OncePerRequestFilter {
-
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final JwtTokenProvider jwtTokenProvider;
 
     private static final String AUTHORIZATION_HEADER = "Authorization";
@@ -30,32 +29,26 @@ public class JwtTokenFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain
     ) throws ServletException, IOException {
-
         String token = resolveToken(request);
-        String requestURI = request.getRequestURI();
-
-        // H2 콘솔 요청이면 필터 통과
-        if (requestURI.startsWith("/h2-console")) {
-            filterChain.doFilter(request, response);
-            return;
-        }
 
         if (!StringUtils.hasText(token)) {
             log.info("토큰이 존재하지 않습니다.");
             filterChain.doFilter(request, response);
             return;
         }
-        if (!jwtTokenProvider.validateToken(token)) {
-            log.info("유효하지 않은 토큰입니다.");
-            filterChain.doFilter(request, response);
-            return;
-        }
+        try {
+            if (!jwtTokenProvider.validateToken(token)) {
+                log.info("유효하지 않은 토큰입니다.");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                return;
+            }
 
-        if (jwtTokenProvider.validateToken(token)) {
             Authentication auth = jwtTokenProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth); // 인증 정보 설정
+        }catch (Exception e){
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+            return;
         }
-
         filterChain.doFilter(request, response);
     }
 
@@ -66,4 +59,6 @@ public class JwtTokenFilter extends OncePerRequestFilter {
         }
         return null;
     }
+
+
 }

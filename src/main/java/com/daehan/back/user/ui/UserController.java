@@ -8,6 +8,7 @@ import com.daehan.back.user.ui.mapper.UserCommandMapper;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,7 +23,7 @@ public class UserController {
     private final UserService userService;
     private final UserCommandMapper userMapper;
 
-    @PostMapping
+    @PostMapping("/create")
     public ResponseEntity<UserResponse> createUser(
             @RequestBody @Valid final UserCreateRequest request
     ) {
@@ -30,5 +31,10 @@ public class UserController {
         Long userId = userService.createUser(command);
 
         return ResponseEntity.created(URI.create("/user/"+userId)).body(new UserResponse(userId));
+    }
+
+    @GetMapping("/test")
+    public String test(){
+        return "test";
     }
 }
