@@ -1,5 +1,6 @@
 package com.daehan.back.user.domain.model;
 
+import com.daehan.back.common.role.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import lombok.AccessLevel;
@@ -31,6 +32,12 @@ public class User {
     @Column(name = "phonenumber")
     private String phoneNumber;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    public boolean hasRole(UserRole role) {
+        return this.role == role;
+    }
     public boolean matchesPassword(String password, PasswordEncoder passwordEncoder){
         return passwordEncoder.matches(password,this.password);
     }
@@ -48,5 +55,6 @@ public class User {
         this.password = password;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.role = UserRole.ROLE_USER;
     }
 }
