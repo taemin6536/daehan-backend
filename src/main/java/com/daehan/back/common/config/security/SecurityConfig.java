@@ -35,7 +35,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(mvcMatcherBuilder.pattern("/user/create")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll() // 로그인, 회원가입 API는 인증 없이 접근 가능
-                        .anyRequest().authenticated() // 나머지 API는 인증 필요
+                        .anyRequest().permitAll() // 나머지 API는 인증 필요 없음 추후 수정 예정
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
