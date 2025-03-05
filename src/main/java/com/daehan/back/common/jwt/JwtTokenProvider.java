@@ -34,6 +34,7 @@ public class JwtTokenProvider {
     private static final long ACCESS_TOKEN_EXPIRE_TIME = 1000 * 60 * 30; //30분
     private final Key key;
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
+        log.info("JwtTokenProvider 생성자 호출 => secretKey : {}", secretKey);
         byte[] keyBytes = Decoders.BASE64.decode(secretKey);
         this.key = Keys.hmacShaKeyFor(keyBytes);
     }
@@ -76,15 +77,21 @@ public class JwtTokenProvider {
             return true;
         } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
             log.info("잘못된 JWT 서명입니다.");
-            e.printStackTrace();
+            log.error("토큰 검증 실패: {}", e.getMessage());
+            return false;
         } catch (ExpiredJwtException e) {
             log.info("만료된 JWT 토큰입니다.");
+            log.error("토큰 검증 실패: {}", e.getMessage());
+            return false;
         } catch (UnsupportedJwtException e) {
             log.info("지원되지 않는 JWT 토큰입니다.");
+            log.error("토큰 검증 실패: {}", e.getMessage());
+            return false;
         } catch (IllegalArgumentException e) {
             log.info("JWT 토큰이 잘못되었습니다.");
+            log.error("토큰 검증 실패: {}", e.getMessage());
+            return false;
         }
-        return false;
     }
     private Claims parseClaims(String accessToken) {
         try {
