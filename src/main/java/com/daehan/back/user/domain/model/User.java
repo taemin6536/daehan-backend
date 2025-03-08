@@ -42,6 +42,13 @@ public class User {
     @Enumerated(EnumType.STRING)
     private UserRole role;
 
+    @Column(name = "isDeleted")
+    private boolean isDeleted;
+
+    public void delete(){
+        this.isDeleted = true;
+    }
+
     public boolean hasRole(UserRole role) {
         return this.role == role;
     }
@@ -63,5 +70,6 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = UserRole.ROLE_USER;
+        this.isDeleted = false;
     }
 }
