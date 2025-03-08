@@ -47,6 +47,9 @@ public class UserService implements UserDetailsService {
     public void deleteUser(
             final Long id
     ) {
+        //본인 확인 추가해야함.
+
+
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
         user.delete();

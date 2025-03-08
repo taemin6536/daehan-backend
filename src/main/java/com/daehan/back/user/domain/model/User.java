@@ -43,10 +43,10 @@ public class User {
     private UserRole role;
 
     @Column(name = "isDeleted")
-    private boolean isDeleted;
+    private String isDeleted;
 
     public void delete(){
-        this.isDeleted = true;
+        this.isDeleted = "Y";
     }
 
     public boolean hasRole(UserRole role) {
@@ -70,6 +70,6 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.role = UserRole.ROLE_USER;
-        this.isDeleted = false;
+        this.isDeleted = "N";
     }
 }
