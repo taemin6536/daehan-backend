@@ -1,7 +1,9 @@
 package com.daehan.back.common.exception;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -26,6 +28,14 @@ public class ExceptionController {
         log.error("CustomException : ", ex);
         return ResponseEntity
                 .status(ex.getHttpStatus())
+                .body(new ErrorResponse(ex.getMessage()));
+    }
+
+    //추가
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<Object> handleUsernameNotFoundException(UsernameNotFoundException ex){
+        log.error("UsernameNotFoundException : ", ex);
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(new ErrorResponse(ex.getMessage()));
     }
 

@@ -31,16 +31,16 @@ public class UserController {
             @RequestBody @Valid final UserCreateRequest request
     ) {
         UserCreateCommand command = userMapper.toCommand(request);
-        Long userId = userService.createUser(command);
+        Long userSeq = userService.createUser(command);
 
-        return ResponseEntity.created(URI.create("/user/"+userId)).body(new UserResponse(userId));
+        return ResponseEntity.created(URI.create("/user/"+userSeq)).body(new UserResponse(userSeq));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete/{seq}")
     public ResponseEntity<Void> deleteUser(
-            @PathVariable final Long id
+            @PathVariable("seq") final Long seq
     ){
-        userService.deleteUser(id);
+        userService.deleteUser(seq);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 

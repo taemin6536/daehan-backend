@@ -40,20 +40,25 @@ public class UserService implements UserDetailsService {
         user.passwordEncode(passwordEncoder);
         final User save = userRepository.save(user);
 
-        return save.getId();
+        return save.getSeq();
     }
 
     @Transactional(rollbackFor = Exception.class)
     public void deleteUser(
-            final Long id
+            final Long seq
     ) {
-        //본인 확인 추가해야함.
+        try {
+            //본인 확인 추가해야함.
 
 
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
-        user.delete();
-        userRepository.save(user);
+            User user = userRepository.findBySeq(seq)
+                    .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+            user.delete();
+            userRepository.save(user);
+        } catch (UsernameNotFoundException e) {
+            log.error("사용자를 찾을 수 없습니다. SEQ => {}", seq);
+            throw e;
+        }
     }
 
 
