@@ -1,5 +1,11 @@
 # 대한냉동화물물류
 
+## 서비스 소개 : 냉동화물 및 화물차 대차 서비스
+
+## NOTE
+[note] 20250320 / 로그인 및 회원기능 완료. 추후 요구사항을 받고 확장 예정 (문의사항, 회원제?, 오픈카톡 연락망 링크추가, ...)
+
+
 ### Reference Documentation
 
 For further reference, please consider the following sections:
