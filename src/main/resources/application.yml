@@ -12,7 +12,7 @@ spring:
       password: admin123
   jpa:
     hibernate:
-      ddl-auto: update  # 개발 초기 단계.. 후에 update로 바꾸자 일단.
+      ddl-auto: create  # 개발 초기 단계.. 후에 update로 바꾸자 일단.
     show-sql: true
     properties:
       hibernate:

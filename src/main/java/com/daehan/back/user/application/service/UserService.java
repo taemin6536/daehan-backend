@@ -1,5 +1,6 @@
 package com.daehan.back.user.application.service;
 
+import com.daehan.back.common.role.UserRole;
 import com.daehan.back.user.application.dto.UserCreateCommand;
 import com.daehan.back.user.application.mapper.UserMapper;
 import com.daehan.back.user.domain.model.User;
@@ -7,7 +8,10 @@ import com.daehan.back.user.domain.repository.UserRepository;
 import com.daehan.back.user.exception.DuplicateEmailException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -53,6 +57,13 @@ public class UserService implements UserDetailsService {
 
             User user = userRepository.findBySeq(seq)
                     .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication == null || !authentication.isAuthenticated()) {
+                throw new AccessDeniedException("인증되지 않은 사용자입니다.");
+            }
+
+
             user.delete();
             userRepository.save(user);
         } catch (UsernameNotFoundException e) {
