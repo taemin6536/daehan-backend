@@ -2,6 +2,8 @@ package com.daehan.back.common.config.security;
 
 import com.daehan.back.common.jwt.JwtAuthenticationFilter;
 import com.daehan.back.common.jwt.JwtTokenProvider;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.info.Info;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,6 +19,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +38,7 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(mvcMatcherBuilder.pattern("/user/create")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll() // 로그인, 회원가입 API는 인증 없이 접근 가능
-                        .anyRequest().permitAll() // 나머지 API는 인증 필요 없음 추후 수정 예정
+                        .anyRequest().permitAll() // 나머지 API 인증 필요 없음 추후 수정 예정
                 )
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
