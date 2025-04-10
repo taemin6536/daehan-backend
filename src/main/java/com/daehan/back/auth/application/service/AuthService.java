@@ -46,19 +46,6 @@ public class AuthService {
         return token;
     }
 
-    private List<GrantedAuthority> getAuthoritiesForUser(User user) {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-
-        // 사용자의 권한을 Enum으로 체크하여 권한을 리스트에 추가
-        if (user.hasRole(UserRole.ROLE_ADMIN)) {
-            authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.name()));
-        } else if (user.hasRole(UserRole.ROLE_USER)) {
-            authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_USER.name()));
-        }
-
-        return authorities;
-    }
-
     public String socialLogin(
             final GoogleUserInfoResponse userInfo
     ) {
@@ -84,5 +71,18 @@ public class AuthService {
         log.info("Social login token generated for user {} => {}", user.getEmail(), token);
 
         return token;
+    }
+
+    private List<GrantedAuthority> getAuthoritiesForUser(User user) {
+        List<GrantedAuthority> authorities = new ArrayList<>();
+
+        // 사용자의 권한을 Enum으로 체크하여 권한을 리스트에 추가
+        if (user.hasRole(UserRole.ROLE_ADMIN)) {
+            authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_ADMIN.name()));
+        } else if (user.hasRole(UserRole.ROLE_USER)) {
+            authorities.add(new SimpleGrantedAuthority(UserRole.ROLE_USER.name()));
+        }
+
+        return authorities;
     }
 }
