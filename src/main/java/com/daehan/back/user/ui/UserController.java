@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.net.URI;
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/v1/api/user")
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;

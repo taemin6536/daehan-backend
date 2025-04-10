@@ -12,7 +12,7 @@ spring:
       password: admin123
   jpa:
     hibernate:
-      ddl-auto: create  # 개발 초기 단계.. 후에 update로 바꾸자 일단.
+      ddl-auto: update  # 개발 초기 단계.. 후에 update로 바꾸자 일단.
     show-sql: true
     properties:
       hibernate:
@@ -21,6 +21,17 @@ spring:
 jwt:
   secret: vG8X7sFJ2jM6Q/Z7pTh5CZGq7Q1JmJj2k8Q6v5Ojlmo= # 32바이트 이상
   token-validity-in-seconds: 3600 # 1시간 (초 단위)
+
+sns:
+  google:
+    url: "https://accounts.google.com/o/oauth2/v2/auth"
+    client:
+      id: "779813450202-m51pjk80ap9q1adtlbeer3dnuo4ovns8.apps.googleusercontent.com"
+      secret: "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"
+    callback:
+      url: "http://localhost:8081/v1/api/oauth/google/callback"
+    token:
+      url: "https://oauth2.googleapis.com/token"
 
 server:
   port: 8081

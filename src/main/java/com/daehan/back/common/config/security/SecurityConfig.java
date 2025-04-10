@@ -36,6 +36,7 @@ public class SecurityConfig {
                 .headers(headers -> headers.frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin))
                 .sessionManagement(sessionManagement -> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                        .requestMatchers(mvcMatcherBuilder.pattern("/v1/api/**")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/user/create")).permitAll()
                         .requestMatchers(mvcMatcherBuilder.pattern("/auth/**")).permitAll() // 로그인, 회원가입 API는 인증 없이 접근 가능
                         .anyRequest().permitAll() // 나머지 API 인증 필요 없음 추후 수정 예정
