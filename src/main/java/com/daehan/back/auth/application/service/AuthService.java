@@ -5,6 +5,7 @@ import com.daehan.back.auth.exception.PasswordNotMatch;
 import com.daehan.back.auth.exception.UserNotFoundByEmail;
 import com.daehan.back.common.jwt.JwtTokenProvider;
 import com.daehan.back.common.role.UserRole;
+import com.daehan.back.oauth.application.dto.response.GoogleUserInfoResponse;
 import com.daehan.back.user.domain.model.User;
 import com.daehan.back.user.domain.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +57,32 @@ public class AuthService {
         }
 
         return authorities;
+    }
+
+    public String socialLogin(
+            final GoogleUserInfoResponse userInfo
+    ) {
+        // 1. 이메일을 기반으로 사용자 조회
+        User user = userRepository.findByEmail(userInfo.email())
+                .orElseGet(() -> {
+                    // 2. 사용자가 없으면, 신규 사용자 생성 (소셜 로그인 전용 사용자 생성)
+                    // 예: User.createSocialUser()라는 팩토리 메서드를 사용해서 user 인스턴스를 생성하는 방식
+                    User newUser = User.createSocialUser(
+                            userInfo.email(),
+                            userInfo.name()
+                            // 필요에 따라 추가적인 정보를 전달
+                            // 추가 필드가 있다면 같이 설정
+                    );
+                    return userRepository.save(newUser);
+                });
+
+        // 3. 사용자에게 부여된 권한을 가져옴
+        List<GrantedAuthority> authorities = getAuthoritiesForUser(user);
+
+        // 4. 내부 JWT 토큰 생성
+        String token = jwtTokenProvider.createToken(user.getEmail(), authorities);
+        log.info("Social login token generated for user {} => {}", user.getEmail(), token);
+
+        return token;
     }
 }

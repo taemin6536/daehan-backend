@@ -1,10 +1,12 @@
 package com.daehan.back.oauth.application.social;
 
+import com.daehan.back.oauth.application.dto.response.GoogleTokenResponse;
+import com.daehan.back.oauth.application.dto.response.GoogleUserInfoResponse;
 import com.daehan.back.oauth.helper.constant.SocialLoginType;
 
 public interface SocialOauth {
     String getOauthRedirectURL();
-    String requestAccessToken(String code);
+    GoogleTokenResponse requestAccessToken(String code);
 
     default SocialLoginType type() {
         if (this instanceof GoogleOauth) {
@@ -17,4 +19,6 @@ public interface SocialOauth {
             return null;
         }
     }
+
+    GoogleUserInfoResponse getUserInfo(String accessToken);
 }

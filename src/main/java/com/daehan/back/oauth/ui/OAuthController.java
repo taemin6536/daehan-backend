@@ -32,7 +32,7 @@ public class OAuthController {
             @PathVariable(name = "socialLoginType") final SocialLoginType socialLoginType,
             @RequestParam(name = "code") final String code) {
         log.info(">> 소셜 로그인 API 서버로부터 받은 code :: {}", code);
-        return oauthService.requestAccessToken(socialLoginType, code);
+        return oauthService.handleSocialLogin(socialLoginType, code);
     }
 
     @GetMapping("test")

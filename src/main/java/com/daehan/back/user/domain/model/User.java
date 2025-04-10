@@ -45,6 +45,26 @@ public class User {
     @Column(name = "deleted")
     private boolean deleted;
 
+    public User(final String name, final String password, final String email, final String phoneNumber, final UserRole role, final boolean deleted) {
+        this.name = name;
+        this.password = password;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.role = role;
+        this.deleted = deleted;
+    }
+
+    public static User createSocialUser(final String email, final String name) {
+        return new User(
+                name,
+                null,
+                email,
+                null,
+                UserRole.ROLE_USER,
+                false
+        );
+    }
+
     public void delete(){
         this.deleted = true;
     }
